@@ -21,6 +21,13 @@ def update():
     # Condição que verifica a colisão nos obstáculos
     if (morcego.colliderect(estalactite1)) or (morcego.colliderect(estalagmite1)) or (morcego.y <= 0):
         colisao()
+    # Condição que verifica se o morcego está vivo, caso positivo o sistema verifica uma
+    # segunda condição, se a velocidade for maior que zero muda para a imagem 1, senão usa a imagem 2
+    if (morcego.alive):
+        if (morcego.speed > 0):
+            morcego.image = 'morcego1'
+        else:
+            morcego.image = 'morcego2'
 
 # Desenha os objetos na tela
 def draw():
