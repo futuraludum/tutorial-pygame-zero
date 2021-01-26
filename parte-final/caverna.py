@@ -15,11 +15,10 @@ def update():
     estalactite1.x -= velocidade_tela
     estalagmite1.x -= velocidade_tela
     # Condição para verificar se a estalactite atingiu uma posição negativa no eixo x
-    if (estalactite1.right) < 0:
-        offset = random.randint(-80, 80)
-        print('offset: ' + str(offset))
-        estalactite1.midleft = (WIDTH, offset)
-        estalagmite1.midleft = (WIDTH, offset + estalactite1.height + espaco)
+    if (estalactite1.x) < 0:
+        ajuste = random.randint(-80, 80)
+        estalactite1.midleft = (WIDTH, ajuste)
+        estalagmite1.midleft = (WIDTH, ajuste + estalactite1.height + espaco)
         estalactite1.number += 1
     # Condição para verificar se o morcego atingiu o topo ou o chão da caverna
     if (morcego.y > HEIGHT):
