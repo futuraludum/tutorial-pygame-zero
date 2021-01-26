@@ -1,3 +1,6 @@
+# Importação da blbioteca
+import random
+
 # Título do jogo
 TITLE = 'Voando na Caverna'
 # Largura da janela
@@ -12,9 +15,12 @@ def update():
     estalactite1.x -= velocidade_tela
     estalagmite1.x -= velocidade_tela
     # Condição para verificar se a estalactite atingiu uma posição negativa no eixo x
-    if (estalactite1.x) < 0:
-        estalactite1.x = WIDTH
-        estalagmite1.x = WIDTH
+    if (estalactite1.right) < 0:
+        offset = random.randint(-80, 80)
+        print('offset: ' + str(offset))
+        estalactite1.midleft = (WIDTH, offset)
+        estalagmite1.midleft = (WIDTH, offset + estalactite1.height + espaco)
+        estalactite1.number += 1
     # Condição para verificar se o morcego atingiu o topo ou o chão da caverna
     if (morcego.y > HEIGHT):
         reset()
@@ -28,6 +34,9 @@ def update():
             morcego.image = 'morcego1'
         else:
             morcego.image = 'morcego2'
+    # Condição para atualizar os pontos
+    if (estalactite1.right < morcego.left):
+        morcego.score = estalactite1.number
 
 # Desenha os objetos na tela
 def draw():
@@ -35,6 +44,13 @@ def draw():
     morcego.draw()
     estalactite1.draw()
     estalagmite1.draw()
+    # Desenha o quadro de pontos do jogador atual
+    screen.draw.text(
+        str(morcego.score),
+        color = 'yellow',
+        midtop = (WIDTH/2, 15),
+        fontsize = 55
+        )
 
 # Executa sempre que o botão do mouse é pressionado
 def on_mouse_down():
@@ -49,7 +65,10 @@ def reset():
     estalagmite1.center = (450, estalactite1.height + espaco)
     morcego.alive = True
     morcego.image = 'morcego1'
+    morcego.score = 0
+    estalactite1.number = 1
 
+# Função para executar os comandos depois da colisão
 def colisao():
     morcego.image = "morcego-fantasma"
     morcego.alive = False
