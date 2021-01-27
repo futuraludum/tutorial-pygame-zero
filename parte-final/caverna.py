@@ -10,47 +10,48 @@ HEIGHT = 679
 
 # Esta função executa em torno de 60 vezes por segundo
 def update():
-    morcego.speed += gravidade
-    morcego.y += morcego.speed
-    estalactite1.x -= velocidade_tela
-    estalagmite1.x -= velocidade_tela
+    if (morcego.started):
+        morcego.speed += gravidade
+        morcego.y += morcego.speed
+        estalactite1.x -= velocidade_tela
+        estalagmite1.x -= velocidade_tela
 
-    estalactite2.x -= velocidade_tela
-    estalagmite2.x -= velocidade_tela
+        estalactite2.x -= velocidade_tela
+        estalagmite2.x -= velocidade_tela
 
-    # Condição para verificar se a estalactite atingiu uma posição negativa no eixo x
-    if (estalactite1.x) < 0:
-        ajuste = random.randint(-80, 80)
-        estalactite1.midleft = (WIDTH, ajuste)
-        estalagmite1.midleft = (WIDTH, ajuste + estalactite1.height + espaco)
-        estalactite1.number += 1
+        # Condição para verificar se a estalactite atingiu uma posição negativa no eixo x
+        if (estalactite1.x) < 0:
+            ajuste = random.randint(-80, 80)
+            estalactite1.midleft = (WIDTH, ajuste)
+            estalagmite1.midleft = (WIDTH, ajuste + estalactite1.height + espaco)
+            estalactite1.number += 1
 
-    if (estalactite2.x) < 0:
-        ajuste = random.randint(-80, 80)
-        estalactite2.midleft = (WIDTH, ajuste)
-        estalagmite2.midleft = (WIDTH, ajuste + estalactite2.height + espaco)
-        estalactite2.number += 1
+        if (estalactite2.x) < 0:
+            ajuste = random.randint(-80, 80)
+            estalactite2.midleft = (WIDTH, ajuste)
+            estalagmite2.midleft = (WIDTH, ajuste + estalactite2.height + espaco)
+            estalactite2.number += 1
 
-    # Condição para verificar se o morcego atingiu o topo ou o chão da caverna
-    if (morcego.y > HEIGHT):
-        reset()
-    # Condição que verifica a colisão nos obstáculos
-    if ((morcego.colliderect(estalactite1)) or (morcego.colliderect(estalagmite1)) or (morcego.y <= 0)
-        or (morcego.colliderect(estalactite2)) or (morcego.colliderect(estalagmite2))):
-        colisao()
-    # Condição que verifica se o morcego está vivo, caso positivo o sistema verifica uma
-    # segunda condição, se a velocidade for maior que zero muda para a imagem 1, senão usa a imagem 2
-    if (morcego.alive):
-        if (morcego.speed > 0):
-            morcego.image = 'morcego1'
-        else:
-            morcego.image = 'morcego2'
-    # Condição para atualizar os pontos
-    if (estalactite1.right < morcego.left):
-        morcego.score = estalactite1.number + estalactite2.number - 1
+        # Condição para verificar se o morcego atingiu o topo ou o chão da caverna
+        if (morcego.y > HEIGHT):
+            reset()
+        # Condição que verifica a colisão nos obstáculos
+        if ((morcego.colliderect(estalactite1)) or (morcego.colliderect(estalagmite1)) or (morcego.y <= 0)
+            or (morcego.colliderect(estalactite2)) or (morcego.colliderect(estalagmite2))):
+            colisao()
+        # Condição que verifica se o morcego está vivo, caso positivo o sistema verifica uma
+        # segunda condição, se a velocidade for maior que zero muda para a imagem 1, senão usa a imagem 2
+        if (morcego.alive):
+            if (morcego.speed > 0):
+                morcego.image = 'morcego1'
+            else:
+                morcego.image = 'morcego2'
+        # Condição para atualizar os pontos
+        if (estalactite1.right < morcego.left):
+            morcego.score = estalactite1.number + estalactite2.number - 1
 
-    if (estalactite2.right < morcego.left):
-        morcego.score = estalactite1.number + estalactite2.number - 1
+        if (estalactite2.right < morcego.left):
+            morcego.score = estalactite1.number + estalactite2.number - 1
 
 # Desenha os objetos na tela
 def draw():
@@ -72,8 +73,9 @@ def draw():
 
 # Executa sempre que o botão do mouse é pressionado
 def on_mouse_down():
-    if (morcego.alive):
-        morcego.speed = -6.5
+    if (morcego.started):
+        if (morcego.alive):
+            morcego.speed = -6.5
 
 # Função para reiniciar o jogo
 def reset():
@@ -91,10 +93,17 @@ def reset():
     estalactite1.number = 1
     estalactite2.number = 1
 
+    morcego.started = False
+
 # Função para executar os comandos depois da colisão
 def colisao():
     morcego.image = "morcego-fantasma"
     morcego.alive = False
+
+def on_key_down(key):
+    print(key)
+    if (key == keys.SPACE):
+        morcego.started = True
 
 # Cria o personagem morcego do jogo
 morcego = Actor('morcego1')
