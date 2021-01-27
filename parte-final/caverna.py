@@ -14,12 +14,23 @@ def update():
     morcego.y += morcego.speed
     estalactite1.x -= velocidade_tela
     estalagmite1.x -= velocidade_tela
+
+    estalactite2.x -= velocidade_tela
+    estalagmite2.x -= velocidade_tela
+
     # Condição para verificar se a estalactite atingiu uma posição negativa no eixo x
     if (estalactite1.x) < 0:
         ajuste = random.randint(-80, 80)
         estalactite1.midleft = (WIDTH, ajuste)
         estalagmite1.midleft = (WIDTH, ajuste + estalactite1.height + espaco)
         estalactite1.number += 1
+
+    if (estalactite2.x) < 0:
+        ajuste = random.randint(-80, 80)
+        estalactite2.midleft = (WIDTH, ajuste)
+        estalagmite2.midleft = (WIDTH, ajuste + estalactite2.height + espaco)
+        estalactite2.number += 1
+
     # Condição para verificar se o morcego atingiu o topo ou o chão da caverna
     if (morcego.y > HEIGHT):
         reset()
@@ -34,8 +45,11 @@ def update():
         else:
             morcego.image = 'morcego2'
     # Condição para atualizar os pontos
-    if (estalactite1.right < morcego.left):
-        morcego.score = estalactite1.number
+    if (estalactite1.right < morcego.x):
+        morcego.score = estalactite1.number + estalactite2.number - 1
+
+    if (estalactite2.right < morcego.left):
+        morcego.score = estalactite1.number + estalactite2.number - 1
 
 # Desenha os objetos na tela
 def draw():
@@ -43,6 +57,10 @@ def draw():
     morcego.draw()
     estalactite1.draw()
     estalagmite1.draw()
+
+    estalactite2.draw()
+    estalagmite2.draw()
+
     # Desenha o quadro de pontos do jogador atual
     screen.draw.text(
         str(morcego.score),
@@ -60,12 +78,17 @@ def on_mouse_down():
 def reset():
     morcego.speed = 1
     morcego.center = (75, 350)
-    estalactite1.center = (450, 0)
-    estalagmite1.center = (450, estalactite1.height + espaco)
+    estalactite1.center = (250, 0)
+    estalagmite1.center = (250, estalactite1.height + espaco)
+
+    estalactite2.center = (720, 0)
+    estalagmite2.center = (720, estalagmite2.height + espaco)
+
     morcego.alive = True
     morcego.image = 'morcego1'
     morcego.score = 0
     estalactite1.number = 1
+    estalactite2.number = 1
 
 # Função para executar os comandos depois da colisão
 def colisao():
@@ -76,9 +99,13 @@ def colisao():
 morcego = Actor('morcego1')
 
 # Adicionando os obstáculos
-espaco = 180
+#espaco = 180
+espaco = 280
 estalactite1 = Actor('estalactite1')
 estalagmite1 = Actor('estalagmite1')
+
+estalactite2 = Actor('estalactite2')
+estalagmite2 = Actor('estalagmite2')
 
 velocidade_tela = 1
 gravidade = 0.3
