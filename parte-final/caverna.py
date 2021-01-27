@@ -35,7 +35,8 @@ def update():
     if (morcego.y > HEIGHT):
         reset()
     # Condição que verifica a colisão nos obstáculos
-    if (morcego.colliderect(estalactite1)) or (morcego.colliderect(estalagmite1)) or (morcego.y <= 0):
+    if ((morcego.colliderect(estalactite1)) or (morcego.colliderect(estalagmite1)) or (morcego.y <= 0)
+        or (morcego.colliderect(estalactite2)) or (morcego.colliderect(estalagmite2))):
         colisao()
     # Condição que verifica se o morcego está vivo, caso positivo o sistema verifica uma
     # segunda condição, se a velocidade for maior que zero muda para a imagem 1, senão usa a imagem 2
@@ -45,7 +46,7 @@ def update():
         else:
             morcego.image = 'morcego2'
     # Condição para atualizar os pontos
-    if (estalactite1.right < morcego.x):
+    if (estalactite1.right < morcego.left):
         morcego.score = estalactite1.number + estalactite2.number - 1
 
     if (estalactite2.right < morcego.left):
@@ -103,7 +104,6 @@ morcego = Actor('morcego1')
 espaco = 280
 estalactite1 = Actor('estalactite1')
 estalagmite1 = Actor('estalagmite1')
-
 estalactite2 = Actor('estalactite2')
 estalagmite2 = Actor('estalagmite2')
 
