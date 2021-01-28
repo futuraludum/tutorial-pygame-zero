@@ -15,11 +15,11 @@ def update():
     if (morcego.started):
         morcego.speed += gravidade
         morcego.y += morcego.speed
-        estalactite1.x -= velocidade_tela
-        estalagmite1.x -= velocidade_tela
+        estalactite1.x -= morcego.velocidade_tela
+        estalagmite1.x -= morcego.velocidade_tela
 
-        estalactite2.x -= velocidade_tela
-        estalagmite2.x -= velocidade_tela
+        estalactite2.x -= morcego.velocidade_tela
+        estalagmite2.x -= morcego.velocidade_tela
 
         # Condição para verificar se a estalactite atingiu uma posição negativa no eixo x
         if (estalactite1.x) < 0:
@@ -61,6 +61,11 @@ def update():
         # Condição para atualizar a pontuação máxima
         if (morcego.score > morcego.max_score):
             morcego.max_score = morcego.score
+
+        # Condição para aumentar a velocidade do jogo
+        if (morcego.score >= morcego.conta_ponto):
+            morcego.velocidade_tela += 1
+            morcego.conta_ponto += 10
 
 # Desenha os objetos na tela
 def draw():
@@ -109,6 +114,8 @@ def reset():
     estalactite1.number = 1
     estalactite2.number = 1
     morcego.started = False
+    morcego.velocidade_tela = 5
+    morcego.conta_ponto = 10
 
 # Função para executar os comandos depois da colisão
 def colisao():
@@ -131,7 +138,8 @@ estalagmite1 = Actor('estalagmite1')
 estalactite2 = Actor('estalactite2')
 estalagmite2 = Actor('estalagmite2')
 
-velocidade_tela = 5
+morcego.velocidade_tela = 5
+morcego.conta_ponto = 10
 gravidade = 0.3
 morcego.max_score = 0
 
